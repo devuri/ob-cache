@@ -1,6 +1,6 @@
 {
     "name": "devuri/ob-cache",
-    "description": "A simple PHP library for accessing nested data using dot notation.",
+    "description": "A simple versatile and easy-to-use PHP class designed for managing caching in WordPress environments.",
     "keywords": [
         "ob-cache",
         "cached-data",
