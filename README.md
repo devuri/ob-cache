@@ -56,7 +56,7 @@ Use the `forget` method to remove data from the cache:
 This class utilizes WordPress caching functions (`wp_cache_set`, `wp_cache_get`, `wp_cache_delete`) and is designed to work within a WordPress environment.
 
 ## Notes
-- The class uses a protected constant `PLUGIN_CACHE_GROUP` to define a cache group for better organization and management of cached items.
+- The class uses a protected constant `OBC_CACHE_GROUP` to define a cache group called `evp_cached` for better organization and management of cached items.
 - Cache mode status can be checked using `is_cache_allowed()` method.
 - When caching is disabled, the `set` and `get` methods directly handle data without caching.
 
