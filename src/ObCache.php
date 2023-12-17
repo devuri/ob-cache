@@ -4,165 +4,165 @@ namespace Urisoft;
 
 class ObCache
 {
-	protected const PLUGIN_CACHE_GROUP = 'evp_cached';
+    protected const PLUGIN_CACHE_GROUP = 'evp_cached';
 
-	/**
-	 * Flag to indicate if cache is allowed
-	 *
-	 * @var bool
-	 */
+    /**
+     * Flag to indicate if cache is allowed.
+     *
+     * @var bool
+     */
     protected $is_cache_allowed = true;
 
-	/**
-	 * Constructor for the class.
-	 *
-	 * Initializes the class with the specified caching mode. The cache mode determines whether caching is allowed
-	 * or not within the class's functionality. This setting impacts how the class handles data storage and retrieval.
-	 *
-	 * @param bool $cache_mode Optional. Indicates whether caching is allowed. Default is true (caching allowed).
-	 */
-	public function __construct( bool $cache_mode = true )
-	{
-	    $this->is_cache_allowed = $cache_mode;
-	}
+    /**
+     * Constructor for the class.
+     *
+     * Initializes the class with the specified caching mode. The cache mode determines whether caching is allowed
+     * or not within the class's functionality. This setting impacts how the class handles data storage and retrieval.
+     *
+     * @param bool $cache_mode Optional. Indicates whether caching is allowed. Default is true (caching allowed).
+     */
+    public function __construct( bool $cache_mode = true )
+    {
+        $this->is_cache_allowed = $cache_mode;
+    }
 
-	/**
-	 * Initializes and returns an instance of the class.
-	 *
-	 * This static method serves as a factory for the class. It creates a new instance of the class with the
-	 * specified caching mode. The caching mode dictates whether caching functionality is enabled or disabled
-	 * within the class. This method is typically used to instantiate the class and configure its initial state.
-	 *
-	 * @since [version]
-	 *
-	 * @static
-	 * @access public
-	 *
-	 * @param bool $cache_mode Optional. Indicates whether caching is enabled. Default is true.
-	 *
-	 * @return self Returns a new instance of the class configured with the given cache mode.
-	 */
-	public static function init( $cache_mode = true ) {
-		return new self( $cache_mode );
-	}
+    /**
+     * Initializes and returns an instance of the class.
+     *
+     * This static method serves as a factory for the class. It creates a new instance of the class with the
+     * specified caching mode. The caching mode dictates whether caching functionality is enabled or disabled
+     * within the class. This method is typically used to instantiate the class and configure its initial state.
+     *
+     * @since [version]
+     *
+     * @static
+     *
+     * @param bool $cache_mode Optional. Indicates whether caching is enabled. Default is true.
+     *
+     * @return self Returns a new instance of the class configured with the given cache mode.
+     */
+    public static function init( $cache_mode = true )
+    {
+        return new self( $cache_mode );
+    }
 
     /**
      * Set the cache mode status.
      *
      * @param bool $mode The mode, true for development, false otherwise.
      */
-    public function set_cache_allowed( bool $mode ) {
+    public function set_cache_allowed( bool $mode ): void
+    {
         $this->is_cache_allowed = $mode;
     }
 
-	/**
+    /**
      * Get the cache mode status.
      */
     public function is_cache_allowed(): bool
-	{
+    {
         return $this->is_cache_allowed;
     }
 
-	/**
-	 * Sets the cache value for a specified key.
-	 *
-	 * This method allows setting a cache value based on a provided key. It first checks if caching is allowed
-	 * in the current context. If caching is disabled, the method immediately returns false. If the cache already
-	 * contains a value for the specified key, the method returns null. Otherwise, it uses the provided callback
-	 * function to generate and set the cache value. The cache expiration time is configurable.
-	 *
-	 * @access public
-	 *
-	 * @param string   $cache_key The cache key under which the value will be stored.
-	 * @param callable $callback  A callback function that generates the data to be cached.
-	 *                            It should not take any arguments and return the data to be cached.
-	 * @param int      $expire    Optional. The time, in seconds, until the cache expires. Default is 3600 seconds (1 hour).
-	 *
-	 * @return ?bool Returns false if caching is not allowed, null if the cache key already exists,
-	 *               or void if a new cache value is set successfully.
-	 */
-    public function set( $cache_key, callable $callback, $expire = 3600 ): ?bool
-    {
-		if (! $this->is_cache_allowed ) {
-			// In development or some cases where we need to bypass cache or reset it frequently.
-			return false;
-		}
-
-		$cached = $this->cache_get( $key );
-
-		if (false !== $cached) {
-			return null;
-		}
-
-		// Call the callback function to generate data
-        $data = call_user_func($callback);
-
-        wp_cache_set( $cache_key, $data, self::PLUGIN_CACHE_GROUP, $expire );
-    }
-
-	/**
-     * Retrieves data from the cache or uses a callback function to generate and cache the data.
+    /**
+     * Sets the cache value for a specified key.
      *
-	 * @access public
-	 *
-     * @param string $key Cache key.
-     * @param callable $callback Callback function to generate data.
-     * @param int $expiration Expiration time in seconds.
-     * @return mixed Cached data or data generated by the callback.
+     * This method allows setting a cache value based on a provided key. It first checks if caching is allowed
+     * in the current context. If caching is disabled, the method immediately returns false. If the cache already
+     * contains a value for the specified key, the method returns null. Otherwise, it uses the provided callback
+     * function to generate and set the cache value. The cache expiration time is configurable.
+     *
+     * @param string   $key The cache key under which the value will be stored.
+     * @param callable $callback  A callback function that generates the data to be cached.
+     *                            It should not take any arguments and return the data to be cached.
+     * @param int      $expire    Optional. The time, in seconds, until the cache expires. Default is 3600 seconds (1 hour).
+     *
+     * @return ?bool Returns false if caching is not allowed, null if the cache key already exists,
+     *               or void if a new cache value is set successfully.
      */
-    public function get($key, callable $callback, $expiration = 3600)
-	{
-		if (! $this->is_cache_allowed ) {
+    public function set( $key, callable $callback, $expire = 3600 ): ?bool
+    {
+        if ( ! $this->is_cache_allowed ) {
             // In development or some cases where we need to bypass cache or reset it frequently.
-            return call_user_func($callback);
+            return false;
         }
 
-		$cached = $this->cache_get( $key );
+        $cached = $this->cache_get( $key );
 
-		if (false !== $cached) {
+        if ( false !== $cached ) {
+            return null;
+        }
+
+        // Call the callback function to generate data
+        $data = \call_user_func( $callback );
+
+        wp_cache_set( $key, $data, self::PLUGIN_CACHE_GROUP, $expire );
+
+		return true;
+    }
+
+    /**
+     * Retrieves data from the cache or uses a callback function to generate and cache the data.
+     *
+     * @param string   $key        Cache key.
+     * @param callable $callback   Callback function to generate data.
+     * @param int      $expiration Expiration time in seconds.
+     *
+     * @return mixed Cached data or data generated by the callback.
+     */
+    public function get( $key, callable $callback, $expiration = 3600 )
+    {
+        if ( ! $this->is_cache_allowed ) {
+            // In development or some cases where we need to bypass cache or reset it frequently.
+            return \call_user_func( $callback );
+        }
+
+        $cached = $this->cache_get( $key );
+
+        if ( false !== $cached ) {
             return $cached;
         }
 
         // Call the callback function to generate data
-        $data = call_user_func($callback);
+        $data = \call_user_func( $callback );
 
         // Save the data to cache and return it
-		wp_cache_set( $key, $data, self::PLUGIN_CACHE_GROUP, $expiration );
+        wp_cache_set( $key, $data, self::PLUGIN_CACHE_GROUP, $expiration );
 
-		return $data;
+        return $data;
     }
 
-	/**
-     * Retrieves data from the cache.
+    /**
+     * Removes a specific cache entry identified by the provided key.
      *
-     * @param string $key Cache key.
+     * This method attempts to delete a cache entry corresponding to the given key. It first retrieves the cache
+     * item using the `cache_get` method. If the cache item exists (i.e., the retrieval was successful and did not
+     * return false), it proceeds to delete the cache entry using WordPress's `wp_cache_delete` function. If the
+     * cache item does not exist or the retrieval fails, the method returns null, indicating no action was taken.
+     *
+     * @param string $key The cache key associated with the data to be removed.
+     *
+     * @return ?bool Returns true if the cache item is successfully deleted, false if the deletion fails,
+     *               or null if the cache item does not exist.
      */
-	protected function cache_get( string $key )
-	{
-		return wp_cache_get( $key, self::PLUGIN_CACHE_GROUP );
-	}
-
-	/**
-	 * Removes a specific cache entry identified by the provided key.
-	 *
-	 * This method attempts to delete a cache entry corresponding to the given key. It first retrieves the cache
-	 * item using the `cache_get` method. If the cache item exists (i.e., the retrieval was successful and did not
-	 * return false), it proceeds to delete the cache entry using WordPress's `wp_cache_delete` function. If the
-	 * cache item does not exist or the retrieval fails, the method returns null, indicating no action was taken.
-	 *
-	 * @param string $key The cache key associated with the data to be removed.
-	 *
-	 * @return ?bool Returns true if the cache item is successfully deleted, false if the deletion fails,
-	 *               or null if the cache item does not exist.
-	 */
-	public function forget( string $key ): ?bool
+    public function forget( string $key ): ?bool
     {
         $found_cached = $this->cache_get( $key );
 
         if ( false !== $found_cached ) {
-            return wp_cache_delete($key, self::PLUGIN_CACHE_GROUP );
+            return wp_cache_delete( $key, self::PLUGIN_CACHE_GROUP );
         }
 
-		return null;
+        return null;
+    }
+
+    /**
+     * Retrieves data from the cache.
+     *
+     * @param string $key Cache key.
+     */
+    protected function cache_get( string $key )
+    {
+        return wp_cache_get( $key, self::PLUGIN_CACHE_GROUP );
     }
 }
