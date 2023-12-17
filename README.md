@@ -12,24 +12,24 @@ The `ObCache` class is a versatile and easy-to-use PHP class designed for cachin
 ## Usage
 
 ### Instantiation
-- Directly via constructor:
+Directly via constructor:
   ```php
   $cache = new ObCache();
   ```
-- Using the static `init` method:
+Using the static `init` method:
   ```php
   $cache = ObCache::init();
   ```
 
 ### Setting Cache Mode
-- Enable or disable caching:
+Enable or disable caching:
   ```php
   $cache->set_cache_allowed(true); // Enable caching
   $cache->set_cache_allowed(false); // Disable caching
   ```
 
 ### Setting Data in Cache
-- Use the `set` method to cache data:
+Use the `set` method to cache data:
   ```php
   $cache->set('cache_key', function() {
       // Data generation logic
@@ -38,7 +38,7 @@ The `ObCache` class is a versatile and easy-to-use PHP class designed for cachin
   ```
 
 ### Retrieving Data from Cache
-- Use the `get` method to retrieve or generate and cache data:
+Use the `get` method to retrieve or generate and cache data:
   ```php
   $data = $cache->get('cache_key', function() {
       // Data generation logic
@@ -47,7 +47,7 @@ The `ObCache` class is a versatile and easy-to-use PHP class designed for cachin
   ```
 
 ### Removing Data from Cache
-- Use the `forget` method to remove data from the cache:
+Use the `forget` method to remove data from the cache:
   ```php
   $cache->forget('cache_key');
   ```
