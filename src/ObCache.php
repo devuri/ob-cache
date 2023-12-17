@@ -96,7 +96,7 @@ class ObCache
         // Call the callback function to generate data
         $data = \call_user_func( $callback );
 
-        wp_cache_set( $key, $data, self::PLUGIN_CACHE_GROUP, $expire );
+        wp_cache_set( $key, $data, self::OBC_CACHE_GROUP, $expire );
 
 		return true;
     }
@@ -127,7 +127,7 @@ class ObCache
         $data = \call_user_func( $callback );
 
         // Save the data to cache and return it
-        wp_cache_set( $key, $data, self::PLUGIN_CACHE_GROUP, $expiration );
+        wp_cache_set( $key, $data, self::OBC_CACHE_GROUP, $expiration );
 
         return $data;
     }
@@ -150,7 +150,7 @@ class ObCache
         $found_cached = $this->cache_get( $key );
 
         if ( false !== $found_cached ) {
-            return wp_cache_delete( $key, self::PLUGIN_CACHE_GROUP );
+            return wp_cache_delete( $key, self::OBC_CACHE_GROUP );
         }
 
         return null;
@@ -163,6 +163,6 @@ class ObCache
      */
     protected function cache_get( string $key )
     {
-        return wp_cache_get( $key, self::PLUGIN_CACHE_GROUP );
+        return wp_cache_get( $key, self::OBC_CACHE_GROUP );
     }
 }
