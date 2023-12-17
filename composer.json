@@ -1,5 +1,5 @@
 {
-    "name": "devuri/dot-access",
+    "name": "devuri/ob-cache",
     "description": "A simple PHP library for accessing nested data using dot notation.",
     "keywords": [
         "dot-access",
