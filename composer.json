@@ -2,9 +2,9 @@
     "name": "devuri/ob-cache",
     "description": "A simple PHP library for accessing nested data using dot notation.",
     "keywords": [
-        "dot-access",
-        "nested-data",
-        "dot-notation"
+        "ob-cache",
+        "cached-data",
+        "wordpress"
     ],
     "type": "library",
     "license": "MIT",
