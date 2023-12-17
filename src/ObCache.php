@@ -4,7 +4,7 @@ namespace Urisoft;
 
 class ObCache
 {
-    protected const PLUGIN_CACHE_GROUP = 'evp_cached';
+    protected const OBC_CACHE_GROUP = 'evp_cached';
 
     /**
      * Flag to indicate if cache is allowed.
